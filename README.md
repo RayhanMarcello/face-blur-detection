@@ -3,11 +3,7 @@
 _A Functional Programming Approach with Rust & React_
 
 **Author:**<br/>
-Rayhan Marcello Ananda Purnomo
-Muhammad Rakha Randhika
-Faqih Chairul Anam
-Amisha Nabila 
-Nurhafid Sudarianto
+Rayhan Marcello Ananda Purnomo|Maulida Rahmayanti|Muhammad Rakha Randhika|Faqih Chairul Anam|Amisha Nabila|Nurhafid Sudarianto
 ---
 
 ## **Abstract**
@@ -515,4 +511,5 @@ Menerapkan paradigma **Functional Programming** secara konsisten
 
 **Rayhan Marcello**  
 GitHub: [@RayhanMarcello](https://github.com/RayhanMarcello)
+
 
