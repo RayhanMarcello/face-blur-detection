@@ -1,43 +1,45 @@
-# Face Blur Detection – Real-time Face Detection System 
-**A Functional Programming Approach with Rust**
+# **Face Blur Detection – Real-time Privacy Protection System 🔒**
 
-**Authors:**  
-Rayhan Marcello Ananda Purnomo | Nurhafid Sudarianto | Maulida Rahmayanti | Muhammad Rakha Randika | Amisha Nabila Putri Wiguna | Faqih Chairul Anam
+_A Functional Programming Approach with Rust & React_
 
----
-
-## Abstract
-
-**Face Blur Detection** adalah aplikasi deteksi wajah real-time yang dibangun menggunakan **Rust** sebagai Backend dan **React (Vite)** sebagai Frontend dengan pendekatan **functional programming**. Backend dikembangkan menggunakan framework **Axum** dan runtime asynchronous **Tokio**, memungkinkan sistem menangani request secara concurrent dan async. Sistem menggunakan **YOLO11n** melalui **ONNX Runtime** untuk inferensi machine learning dan **OpenCV** untuk capture webcam.
+**Author:**<br/>
+Rayhan Marcello
 
 ---
 
-## Introduction
+## **Abstract**
 
-Aplikasi ini dirancang untuk menyelesaikan permasalahan utama pada sistem deteksi wajah umumnya yaitu:
+**Face Blur Detection** adalah aplikasi privacy protection yang secara otomatis mendeteksi dan mengaburkan wajah dalam gambar dan video real-time. Dibangun menggunakan **Rust** sebagai Backend (framework **Axum** + runtime **Tokio**) dan **React (Vite)** sebagai Frontend, dengan pendekatan **functional programming**. Backend saat ini berjalan dalam **mock mode** untuk kemudahan development di Windows, sementara frontend menggunakan **face-api.js** untuk deteksi wajah akurat di browser.
 
-1. **Lambatnya processing** deteksi wajah pada sistem tradisional
-2. **Keterbatasan concurrency** dalam menangani multiple request deteksi
+---
+
+## **Introduction**
+
+Aplikasi ini dirancang untuk menyelesaikan permasalahan utama dalam perlindungan privasi visual:
+
+1. **Otomatisasi blur wajah** untuk konten sensitif
+2. **Processing real-time** dengan latency rendah
 3. Dibutuhkan sistem modern dengan arsitektur **aman, efisien, dan scalable**
 
 ### Mengapa Rust?
 
 | Alasan | Penjelasan |
 |--------|------------|
-| **Memory Safety** | Zero-cost abstractions tanpa garbage collector, mencegah memory leaks |
-| **High Concurrency** | Tokio async runtime untuk handle multiple detection requests |
-| **Functional Friendly** | Mendukung paradigma pemrograman fungsional (immutability, pattern matching) |
-| **Native Performance** | Setara C/C++ untuk ML inference pipeline |
+| **Memory Safety** | Zero-cost abstractions tanpa garbage collector |
+| **High Concurrency** | Tokio async runtime untuk handle multiple requests |
+| **Functional Friendly** | Mendukung paradigma pemrograman fungsional |
+| **Type Safety** | Strong typing mencegah runtime errors |
 
 ### Tujuan Utama
 
-Memberikan sistem deteksi wajah yang **cepat, scalable, dan aman**  
-Menyediakan API detection yang dapat di-integrate dengan aplikasi lain  
-Mengaplikasikan paradigma **Functional Programming** dalam implementasi sistem  
+✅ Memberikan sistem blur wajah yang **cepat, scalable, dan aman**  
+✅ Menyediakan API detection yang dapat di-integrate  
+✅ Mengaplikasikan paradigma **Functional Programming**  
+✅ Client-side processing untuk privasi maksimal  
 
 ---
 
-## Background & Concepts
+## **Background & Concepts**
 
 ### Technology Stack
 
@@ -46,285 +48,183 @@ Mengaplikasikan paradigma **Functional Programming** dalam implementasi sistem
 | **Backend** | Rust + Axum |
 | **Frontend** | React (Vite) + Tailwind CSS |
 | **Runtime Async** | Tokio |
-| **ML Inference** | ONNX Runtime |
-| **Computer Vision** | OpenCV |
+| **Face Detection** | face-api.js (TinyFaceDetector) |
 | **Serialization** | Serde |
-| **Model** | YOLO11n (lightweight) |
+| **CORS** | tower-http |
 
 ### Konsep Functional Programming Dalam Sistem
 
 | Konsep FP | Implementasi Dalam Proyek |
 |-----------|---------------------------|
-| **Pure Functions** | `preprocess()`, `postprocess()` - transformasi image tanpa side effects |
-| **Immutability** | Frame capture dan detections tidak di-mutate, selalu return new data |
-| **Pattern Matching** | Error handling dengan `Result<T, AppError>` dan `match` expressions |
-| **Higher-Order Functions** | `.map()`, `.filter()` untuk transformasi detection results |
-| **Composition** | Pipeline: Capture → Preprocess → Inference → Postprocess |
+| **Pure Functions** | Detection handlers tidak mutate state |
+| **Immutability** | `AppState` wrapped dalam `Arc` untuk thread-safe sharing |
+| **Pattern Matching** | Error handling dengan `Result<T, AppError>` dan `match` |
+| **Higher-Order Functions** | `.map()`, `.filter()` untuk transformasi data |
+| **Composition** | Pipeline: Upload → Detect → Blur → Download |
 
-Dengan ini aplikasi bisa menangani **ratusan request detection serentak** tanpa bottleneck.
+Dengan ini aplikasi bisa menangani **ratusan request serentak** tanpa bottleneck.
 
 ---
 
-## Source Code Overview
+## **Source Code Overview**
 
-### Struktur Folder Backend
+### Struktur Folder
 
 ```
 face-blur-detection/
-
-face-blur-app/
-│
 ├── backend/
-│   ├── Cargo.toml
-│   ├── models/
-│   │   └── face_detector.onnx        # model ONNX yang sudah kamu training
-│   └── src/
-│       ├── main.rs                   # entry utama axum
-│       │
-│       ├── routes/
-│       │   ├── mod.rs
-│       │   └── face_blur.rs          # endpoint POST /face-blur
-│       │
-│       ├── services/
-│       │   ├── mod.rs
-│       │   ├── detector.rs           # inference ONNX + post-processing
-│       │   └── blur.rs               # implementasi blur wajah
-│       │
-│       ├── utils/
-│       │   ├── mod.rs
-│       │   └── image_convert.rs      # konversi gambar ke tensor & sebaliknya
-│       │
-│       └── state.rs                  # state global (model ONNX, konfigurasi)
+│   ├── src/
+│   │   ├── main.rs                  # Entry point + server bootstrap
+│   │   ├── errors.rs                # Custom error types
+│   │   ├── state.rs                 # Shared application state
+│   │   ├── routes.rs                # API endpoints routing
+│   │   ├── camera.rs                # Mock camera (demo detections)
+│   │   ├── model.rs                 # Mock YOLO model
+│   │   └── inference.rs             # Detection pipeline
+│   │
+│   └── Cargo.toml                   # Rust dependencies
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx                  # Main app component
+│   │   │
+│   │   ├── hooks/
+│   │   │   └── useImageProcessor.jsx    # face-api.js logic
+│   │   │
+│   │   └── components/
+│   │       ├── upload/
+│   │       │   ├── ImageUpload.jsx
+│   │       │   ├── ImagePreview.jsx
+│   │       │   ├── RealtimeDetection.jsx
+│   │       │   └── DownloadResult.jsx
+│   │       ├── processing/
+│   │       │   ├── BlurSlider.jsx
+│   │       │   └── ProcessSettings.jsx
+│   │       └── results/
+│   │           └── ProcessStats.jsx
+│   │
+│   ├── public/
+│   │   └── models/                  # face-api.js model files
+│   │
+│   └── package.json
+│
 └── README.md
 ```
 
 ---
 
-## File Utama
+## **Backend Architecture**
 
-### `src/main.rs`
+### **src/main.rs**
 
 Main point aplikasi yang menjalankan:
 
 - Tokio async runtime menggunakan `#[tokio::main]`
-- Load YOLO11 model dengan ONNX Runtime
-- Initialize webcam dengan OpenCV
-- CORS middleware configuration untuk development
-- Router dari semua module
-- Jalankan Server di `127.0.0.1:3000`
+- Initialize mock model & camera
+- CORS middleware configuration
+- Router setup
+- Server listening di `127.0.0.1:3000`
 
-**Snippet Code:**
+**Code Snippet:**
 ```rust
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🚀 Starting YOLO11 Face Detection Server...");
+    println!("🚀 Starting Face Blur Detection Server (Mock Mode)...");
 
-    // Load model
-    let model = YoloModel::load("yolo11n.onnx")?;
-    
-    // Initialize camera
-    let camera = CameraSource::new(0, 640.0, 480.0)?;
-    
+    let model = YoloModel::new_mock();
+    let camera = CameraSource::new_mock();
     let state = AppState::new(camera, model);
 
-    // Build router with CORS
     let cors = CorsLayer::new()
         .allow_origin(Any)
         .allow_methods([Method::GET, Method::POST])
         .allow_headers(Any);
 
-    let app = api_router(std::sync::Arc::new(state)).layer(cors);
+    let app = api_router(Arc::new(state)).layer(cors);
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
+    println!("✅ Server running on http://127.0.0.1:3000");
+    
     axum::serve(listener, app).await?;
-
     Ok(())
 }
 ```
 
+**Functional Programming:**
+- Immutable state management
+- Error propagation dengan `?` operator
+- Pure configuration functions
+
 ---
 
-### Models Layer
+### **src/errors.rs**
 
-#### `src/errors.rs`
-
-Membuat custom error types dengan **thiserror**:
+Custom error handling dengan **thiserror**:
 
 ```rust
 #[derive(Debug, Error)]
 pub enum AppError {
-    #[error("Webcam capture failed: {0}")] 
-    CaptureFailed(String),
+    #[error("Detection failed: {0}")]
+    DetectionFailed(String),
     
-    #[error("Model inference failed: {0}")] 
-    InferenceFailed(String),
+    #[error("Image processing error: {0}")]
+    ImageError(#[from] image::ImageError),
     
-    #[error("Invalid image input: {0}")] 
-    InvalidImage(String),
-    
-    #[error("Internal error: {0}")] 
+    #[error("Internal error: {0}")]
     Internal(String),
 }
 
-pub type Result<T> = std::result::Result<T, AppError>;
+impl IntoResponse for AppError {
+    fn into_response(self) -> Response {
+        let (status, message) = match self {
+            AppError::DetectionFailed(msg) => (StatusCode::BAD_REQUEST, msg),
+            AppError::ImageError(e) => (StatusCode::BAD_REQUEST, e.to_string()),
+            AppError::Internal(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg),
+        };
+        (status, Json(json!({"error": message}))).into_response()
+    }
+}
 ```
 
 **Functional Programming:**
-- Type-safe error handling dengan `Result<T, E>`
+- Type-safe error handling
 - Pattern matching untuk error branching
-- Automatic conversion dari OpenCV/ONNX errors
+- Automatic HTTP response conversion
 
 ---
 
-#### `src/state.rs`
+### **src/state.rs**
 
 Shared application state (immutable):
 
 ```rust
 pub struct AppState {
-    pub camera: Arc<SharedCamera>,
-    pub model: Arc<SharedModel>,
+    pub camera: Arc<CameraSource>,
+    pub model: Arc<YoloModel>,
 }
 
 impl AppState {
-    pub fn new(camera: SharedCamera, model: SharedModel) -> Self {
-        Self { 
-            camera: Arc::new(camera), 
-            model: Arc::new(model) 
+    pub fn new(camera: CameraSource, model: YoloModel) -> Self {
+        Self {
+            camera: Arc::new(camera),
+            model: Arc::new(model),
         }
     }
 }
 ```
 
 **Functional Programming:**
-- Immutable state dengan `Arc` (Atomic Reference Counting)
-- Thread-safe sharing tanpa locks
+- Immutable state dengan `Arc`
+- Thread-safe sharing tanpa locks eksplisit
 
 ---
 
-### Business Logic Layer
-
-#### `src/camera.rs`
-
-Webcam operations:
-
-```rust
-pub struct CameraSource {
-    inner: Arc<Mutex<VideoCapture>>,
-}
-
-impl CameraSource {
-    pub fn new(index: i32, width: f64, height: f64) -> Result<Self> {
-        let mut cam = VideoCapture::new(index, CAP_ANY)?;
-        if !cam.is_opened()? { 
-            return Err(AppError::CaptureFailed("Unable to open webcam".into())); 
-        }
-        cam.set(CAP_PROP_FRAME_WIDTH, width)?;
-        cam.set(CAP_PROP_FRAME_HEIGHT, height)?;
-        Ok(Self { inner: Arc::new(Mutex::new(cam)) })
-    }
-
-    pub fn capture(&self) -> Result<Mat> {
-        let mut frame = Mat::default();
-        self.inner.lock().unwrap().read(&mut frame)?;
-        if frame.empty() { 
-            return Err(AppError::CaptureFailed("Empty frame".into())); 
-        }
-        Ok(frame)
-    }
-}
-```
-
-**Functional Programming:**
-- Pure function: `capture()` tidak modify internal state
-- Error handling dengan `Result` monad
-
----
-
-#### `src/model.rs`
-
-ONNX model inference:
-
-```rust
-pub struct YoloModel {
-    session: Session,
-}
-
-impl YoloModel {
-    pub fn load<P: AsRef<Path>>(path: P) -> Result<Self> {
-        let session = Session::builder()?
-            .with_optimization_level(GraphOptimizationLevel::Level3)?
-            .with_intra_threads(4)?
-            .commit_from_file(path.as_ref())?;
-        Ok(Self { session })
-    }
-
-    pub fn run(&self, input: &Array<f32, IxDyn>) -> Result<Array<f32, IxDyn>> {
-        let outputs = self.session.run(ort::inputs!("images" => input.view())?)?;
-        let output = outputs["output0"].try_extract_tensor::<f32>()?;
-        Ok(output.view().to_owned())
-    }
-}
-```
-
-**Functional Programming:**
-- Immutable model instance
-- Pure inference function
-
----
-
-#### `src/inference.rs`
-
-Image preprocessing & postprocessing:
-
-```rust
-pub fn preprocess(frame: &Mat) -> Result<Array<f32, IxDyn>> {
-    let rgb = cvt_color(frame, COLOR_BGR2RGB)?;
-    let resized = resize(&rgb, Size::new(640, 640))?;
-    let normalized = resized.convert_to(CV_32F, 1.0 / 255.0)?;
-    
-    // Transform HWC → CHW
-    let array = transform_to_nchw(normalized)?;
-    Ok(array)
-}
-
-pub fn postprocess(
-    output: Array<f32, IxDyn>,
-    conf_threshold: f32,
-) -> Result<Vec<Detection>> {
-    let detections = (0..output.shape()[2])
-        .filter_map(|i| {
-            let conf = max_confidence(&output, i);
-            if conf > conf_threshold {
-                Some(Detection {
-                    bbox: extract_bbox(&output, i),
-                    confidence: conf,
-                })
-            } else {
-                None
-            }
-        })
-        .collect();
-    
-    Ok(detections)
-}
-```
-
-**Functional Programming:**
-- Pure transformations
-- `.filter_map()` untuk functional iteration
-- No mutations, semua return new data
-
----
-
-### Routes Layer (API Endpoints)
-
-#### `src/routes.rs`
+### **src/routes.rs**
 
 API endpoints:
 
 ```rust
-pub fn api_router(state: SharedState) -> Router {
+pub fn api_router(state: Arc<AppState>) -> Router {
     Router::new()
         .route("/api/health", get(health))
         .route("/api/detect", get(detect))
@@ -335,28 +235,150 @@ async fn health() -> Json<Value> {
     Json(json!({"status": "ok"}))
 }
 
-async fn detect(State(state): State<SharedState>) -> Result<Json<Value>> {
+async fn detect(State(state): State<Arc<AppState>>) -> Result<Json<Value>, AppError> {
     let frame = state.camera.capture()?;
-    let input = preprocess(&frame)?;
-    let output = state.model.run(&input)?;
-    let detections = postprocess(output, 0.5)?;
+    let detections = state.model.detect(&frame)?;
     
     Ok(Json(json!({
         "success": true,
         "num_faces": detections.len(),
-        "detections": detections
+        "detections": detections,
+        "mock": true
     })))
 }
 ```
 
 **Functional Programming:**
-- Functional pipeline: Capture → Preprocess → Inference → Postprocess
-- Error propagation dengan `?` operator
-- Immutable request handling
+- Pure route handlers
+- Functional pipeline: Capture → Detect → Serialize
+- Error propagation dengan `?`
 
 ---
 
-## API Endpoints
+### **src/camera.rs** & **src/model.rs**
+
+Mock implementations untuk demo:
+
+```rust
+// camera.rs
+pub struct CameraSource;
+
+impl CameraSource {
+    pub fn new_mock() -> Self {
+        Self
+    }
+    
+    pub fn capture(&self) -> Result<Vec<u8>, AppError> {
+        // Return mock frame data
+        Ok(vec![0u8; 640 * 480 * 3])
+    }
+}
+
+// model.rs
+pub struct YoloModel;
+
+impl YoloModel {
+    pub fn new_mock() -> Self {
+        Self
+    }
+    
+    pub fn detect(&self, _frame: &[u8]) -> Result<Vec<Detection>, AppError> {
+        // Return random mock detections
+        let mut rng = rand::thread_rng();
+        let detections = (0..rng.gen_range(1..4))
+            .map(|_| Detection {
+                bbox: [
+                    rng.gen_range(50.0..300.0),
+                    rng.gen_range(50.0..200.0),
+                    rng.gen_range(350.0..600.0),
+                    rng.gen_range(250.0..450.0),
+                ],
+                confidence: rng.gen_range(0.7..0.95),
+                class_id: 0,
+            })
+            .collect();
+        Ok(detections)
+    }
+}
+```
+
+---
+
+## **Frontend Architecture**
+
+### **src/hooks/useImageProcessor.jsx**
+
+Core logic untuk face detection & blur menggunakan **face-api.js**:
+
+**Features:**
+- Load TinyFaceDetector model dari `/public/models/`
+- Deteksi wajah dengan threshold 0.3
+- Multiple-pass blur (4x iterations) untuk efek kuat
+- Auto-detect hardware threads
+
+**Code Snippet:**
+```javascript
+useEffect(() => {
+  const loadModels = async () => {
+    await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+    setModelReady(true);
+  };
+  loadModels();
+}, []);
+
+const handleProcess = async () => {
+  const img = new Image();
+  img.src = uploadedImage;
+  
+  const detections = await faceapi.detectAllFaces(
+    img, 
+    new faceapi.TinyFaceDetectorOptions({ 
+      inputSize: 320,
+      scoreThreshold: 0.3 
+    })
+  );
+
+  // Blur each detected face
+  detections.forEach((detection) => {
+    const box = detection.box;
+    // Extract → Blur 4x → Paste back
+    for (let i = 0; i < 4; i++) {
+      ctx.filter = `blur(${blurAmount}px)`;
+      ctx.drawImage(tempCanvas, 0, 0);
+    }
+  });
+};
+```
+
+**Functional Programming:**
+- Pure transformations
+- `.forEach()` dan `.map()` untuk iterasi
+- Immutable image processing
+
+---
+
+### **Components Overview**
+
+#### **RealtimeDetection.jsx**
+
+Real-time webcam blur menggunakan backend mock detections:
+
+- Polling `/api/detect` setiap 500ms
+- Canvas rendering dengan blur filter
+- HUD menampilkan jumlah wajah
+
+#### **ImageUpload.jsx**
+
+Drag-and-drop file upload dengan preview.
+
+#### **ProcessSettings.jsx**
+
+- **BlurSlider**: Adjust intensitas blur (5-50px)
+- **Auto Thread Detection**: Otomatis gunakan `navigator.hardwareConcurrency`
+
+---
+
+## **API Endpoints**
 
 ### `GET /api/health`
 
@@ -373,21 +395,24 @@ Health check endpoint.
 
 ### `GET /api/detect`
 
-Capture frame dari server webcam dan deteksi wajah.
+Mock face detection untuk realtime demo.
 
 **Response:**
 ```json
 {
   "success": true,
   "num_faces": 2,
+  "mock": true,
   "detections": [
     {
       "bbox": [120.5, 80.3, 250.7, 220.8],
-      "confidence": 0.92
+      "confidence": 0.92,
+      "class_id": 0
     },
     {
       "bbox": [340.2, 95.1, 470.8, 230.4],
-      "confidence": 0.87
+      "confidence": 0.87,
+      "class_id": 0
     }
   ]
 }
@@ -396,17 +421,17 @@ Capture frame dari server webcam dan deteksi wajah.
 **Fields:**
 - `bbox`: `[x1, y1, x2, y2]` koordinat bounding box
 - `confidence`: Skor confidence (0.0 - 1.0)
+- `mock`: Flag untuk mock mode
 
 ---
 
-## Setup & Run
+## **Setup & Run**
 
 ### Prerequisites
 
 1. **Rust** (rustup + cargo)
-2. **Node.js** v22+
-3. **MSVC C++ Build Tools** (Windows)
-4. **YOLO11n Model** (`yolo11n.onnx`)
+2. **Node.js** v18+
+3. **npm** atau **pnpm**
 
 ### Installation
 
@@ -415,20 +440,21 @@ Capture frame dari server webcam dan deteksi wajah.
 git clone https://github.com/RayhanMarcello/face-blur-detection.git
 cd face-blur-detection
 
-# Install Rust dependencies & build backend
+# Backend
+cd backend
 cargo build --release
 
-# Install frontend dependencies
-cd frontend
+# Frontend
+cd ../frontend
 npm install
-npm run dev
 ```
 
 ### Running
 
 **Terminal 1 - Backend:**
 ```powershell
-cargo run
+cd backend
+cargo run --release
 # Server: http://127.0.0.1:3000
 ```
 
@@ -439,67 +465,143 @@ npm run dev
 # Frontend: http://localhost:5173
 ```
 
+### Quick Test
+
+```powershell
+# Test health endpoint
+Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:3000/api/health"
+
+# Test detection endpoint
+Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:3000/api/detect"
+```
+
 ---
 
-## Screenshots
+## **Features**
+
+✅ **Upload Image Blur**
+- Deteksi wajah menggunakan face-api.js (TinyFaceDetector)
+- Multi-pass blur untuk hasil optimal
+- Download hasil blur
+
+✅ **Real-time Webcam Blur**
+- Polling backend untuk mock detections
+- Canvas overlay dengan blur filter
+- Live face count display
+
+✅ **Adjustable Settings**
+- Blur intensity slider (5-50px)
+- Auto hardware thread detection
+- Processing stats (time, faces detected)
+
+✅ **Modular Backend**
+- Mock mode untuk development
+- CORS enabled
+- Type-safe error handling
+
+---
+
+## **Screenshots**
 
 | Tampilan | Status |
 |----------|--------|
-| API Health Check | ✅ |
-| Real-time Detection UI | ✅ |
-| Detection Response JSON | ✅ |
-| Multi-face Detection | ✅ |
+| Health Check API | ✅ |
+| Mock Detection Response | ✅ |
+| Upload & Blur Interface | ✅ |
+| Real-time Webcam Blur | ✅ |
+| Processing Stats | ✅ |
 
 ---
 
-## Conclusion
+## **Why Mock Backend?**
 
-Projek ini menunjukkan bahwa **Rust** dapat digunakan secara efektif untuk membangun layanan **face detection** yang memiliki kebutuhan:
+Backend mock digunakan karena:
 
-✅ **Cepat & aman** pada sistem concurrency yang tinggi  
-✅ Menerapkan paradigma **Functional Programming** dengan konsisten  
-✅ **Type-safe** error handling dan memory management  
-✅ **Zero-cost abstractions** untuk ML inference pipeline  
+1. **Kompleksitas Windows Setup**: OpenCV + ONNX Runtime memerlukan MSVC Build Tools, Windows SDK, CMake, vcpkg
+2. **Development Speed**: Fokus pada arsitektur dan FP patterns tanpa dependency hell
+3. **Client-side Accuracy**: face-api.js memberikan deteksi akurat di browser
+4. **Easy Deployment**: Tidak perlu GPU atau native dependencies
+
+### Migration ke Production
+
+Untuk production dengan real inference:
+
+```rust
+// Ganti mock dengan real implementation
+let model = YoloModel::load("yolo11n.onnx")?;  // ONNX Runtime
+let camera = CameraSource::new(0, 640.0, 480.0)?;  // OpenCV
+```
+
+---
+
+## **Conclusion**
+
+Projek ini menunjukkan bahwa **Rust** dapat digunakan secara efektif untuk membangun layanan **privacy protection** yang memiliki kebutuhan:
+
+✅ **Cepat & aman** dengan type-safe concurrency  
+✅ Menerapkan paradigma **Functional Programming** secara konsisten  
+✅ **Client-side processing** untuk privasi maksimal  
+✅ **Modular architecture** yang mudah di-maintain  
 
 ### Functional Programming Benefits
 
-- **Immutability** → Thread-safe tanpa locks eksplisit
+- **Immutability** → Thread-safe tanpa explicit locks
 - **Pure functions** → Predictable, testable, composable
 - **Pattern matching** → Exhaustive error handling
-- **Higher-order functions** → Elegant data transformations
+- **Type safety** → Catch bugs at compile-time
 
 ### Future Enhancements
 
 🔮 Ke depannya, fitur projek ini dapat dikembangkan menjadi:
 
-- **Blur detection** untuk mengaburkan wajah terdeteksi
-- **Multi-model support** (face recognition, emotion detection)
-- **WebSocket** untuk real-time streaming
-- **Batch processing** untuk video files
-- **Cloud deployment** dengan containerization (Docker)
+- **Real backend inference** dengan ONNX Runtime + OpenCV
+- **Batch video processing** untuk file upload
+- **WebSocket streaming** untuk real-time collaboration
 - **GPU acceleration** dengan CUDA support
+- **Multi-model support** (face recognition, emotion detection)
+- **Cloud deployment** dengan Docker/Kubernetes
 
 ---
 
-## Why C++ Needed? 🤔
+## **Troubleshooting**
 
-Backend Rust ini membutuhkan **C++ Build Tools** karena:
+### Port Already in Use
 
-1. **OpenCV** → Library C++ untuk computer vision
-2. **ONNX Runtime** → C++ inference engine
-3. **FFI Bindings** → Rust wrapper memanggil C++ native code
-4. **Linking** → `link.exe` untuk compile native dependencies
+```powershell
+# Stop process on port 3000
+Get-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess | Stop-Process
 
-**Compilation Pipeline:**
+# Or use different port
+$env:PORT = "3001"
+cargo run
 ```
-Rust Code → Cargo Build → FFI Bindings (C++) → MSVC Linker → Binary
-```
 
-Ini adalah trade-off: kita dapat **performance native C++** dengan **safety Rust**.
+### Frontend Can't Connect
+
+- Pastikan backend running di port 3000
+- Check CORS configuration
+- Verify `VITE_API_BASE` environment variable
+
+### face-api.js Model Loading Failed
+
+```powershell
+# Ensure models exist
+ls frontend/public/models/
+
+# Re-download if needed
+cd frontend/public/models
+# Download tiny_face_detector_model files
+```
 
 ---
 
-## License
+## **License**
 
 MIT License - Feel free to use and modify! 🚀
 
+---
+
+## **Contact**
+
+**Rayhan Marcello**  
+GitHub: [@RayhanMarcello](https://github.com/RayhanMarcello)
