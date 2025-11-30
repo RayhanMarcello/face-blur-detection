@@ -1,4 +1,4 @@
-# Face Blur Detection – Real-time Face Detection System 🎯
+# Face Blur Detection – Real-time Face Detection System 
 **A Functional Programming Approach with Rust**
 
 **Authors:**  
@@ -31,9 +31,9 @@ Aplikasi ini dirancang untuk menyelesaikan permasalahan utama pada sistem deteks
 
 ### Tujuan Utama
 
-✅ Memberikan sistem deteksi wajah yang **cepat, scalable, dan aman**  
-✅ Menyediakan API detection yang dapat di-integrate dengan aplikasi lain  
-✅ Mengaplikasikan paradigma **Functional Programming** dalam implementasi sistem  
+Memberikan sistem deteksi wajah yang **cepat, scalable, dan aman**  
+Menyediakan API detection yang dapat di-integrate dengan aplikasi lain  
+Mengaplikasikan paradigma **Functional Programming** dalam implementasi sistem  
 
 ---
 
