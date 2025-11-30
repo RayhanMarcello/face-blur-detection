@@ -113,7 +113,7 @@ face-blur-detection/
 ---
 
 ## **Backend Architecture**
-
+---
 ### **src/main.rs**
 
 Main point aplikasi yang menjalankan:
@@ -230,7 +230,7 @@ pub fn api_router(state: Arc<AppState>) -> Router {
         .with_state(state)
 }
 
-async fn health() -> Json<Value> {
+async fn camera() -> Json<Value> {
     Json(json!({"status": "ok"}))
 }
 
@@ -304,7 +304,7 @@ impl YoloModel {
 ---
 
 ## **Frontend Architecture**
-
+---
 ### **src/hooks/useImageProcessor.jsx**
 
 Core logic untuk face detection & blur menggunakan **face-api.js**:
@@ -360,7 +360,7 @@ const handleProcess = async () => {
 
 #### **RealtimeDetection.jsx**
 
-Real-time webcam blur menggunakan backend mock detections:
+Upload Image and realtime camera blur menggunakan backend mock detections:
 
 - Polling `/api/detect` setiap 500ms
 - Canvas rendering dengan blur filter
@@ -410,7 +410,7 @@ Mock face detection untuk realtime demo.
 ---
 
 ## **Setup & Run**
-
+---
 ### Prerequisites
 
 1. **Rust** (rustup + cargo)
@@ -418,7 +418,7 @@ Mock face detection untuk realtime demo.
 3. **npm** atau **pnpm**
 
 ### Installation
-
+---
 ```powershell
 # Clone repository
 git clone https://github.com/RayhanMarcello/face-blur-detection.git
@@ -434,7 +434,7 @@ npm install
 ```
 
 ### Running
-
+---
 **Terminal 1 - Backend:**
 ```powershell
 cd backend
@@ -450,7 +450,7 @@ npm run dev
 ```
 
 ## **Features**
-
+---
 **Upload Image Blur**
 - Deteksi wajah menggunakan face-api.js (TinyFaceDetector)
 - Multi-pass blur untuk hasil optimal
@@ -473,7 +473,7 @@ npm run dev
 
 
 Untuk production dengan real inference:
-
+---
 ```rust
 // Ganti mock dengan real implementation
 let model = YoloModel::load("yolo11n.onnx")?;  // ONNX Runtime
@@ -511,6 +511,7 @@ Menerapkan paradigma **Functional Programming** secara konsisten
 
 **Rayhan Marcello**  
 GitHub: [@RayhanMarcello](https://github.com/RayhanMarcello)
+
 
 
 
