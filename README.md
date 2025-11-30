@@ -1,15 +1,18 @@
-# **Face Blur Detection – Real-time Privacy Protection System 🔒**
+# **Face Blur Detection – Privacy Protection System **
 
 _A Functional Programming Approach with Rust & React_
 
 **Author:**<br/>
-Rayhan Marcello
-
+Rayhan Marcello Ananda Purnomo
+Muhammad Rakha Randhika
+Faqih Chairul Anam
+Amisha Nabila 
+Nurhafid Sudarianto
 ---
 
 ## **Abstract**
 
-**Face Blur Detection** adalah aplikasi privacy protection yang secara otomatis mendeteksi dan mengaburkan wajah dalam gambar dan video real-time. Dibangun menggunakan **Rust** sebagai Backend (framework **Axum** + runtime **Tokio**) dan **React (Vite)** sebagai Frontend, dengan pendekatan **functional programming**. Backend saat ini berjalan dalam **mock mode** untuk kemudahan development di Windows, sementara frontend menggunakan **face-api.js** untuk deteksi wajah akurat di browser.
+**Face Blur Detection** adalah aplikasi privacy protection yang secara otomatis mendeteksi dan mengaburkan wajah dalam gambar. Dibangun menggunakan **Rust** sebagai Backend (framework **Axum** + runtime **Tokio**) dan **React (Vite)** sebagai Frontend, dengan pendekatan **functional programming**. Backend saat ini berjalan dalam **mock mode** untuk kemudahan development di Windows, sementara frontend menggunakan **face-api.js** untuk deteksi wajah akurat di browser.
 
 ---
 
@@ -129,7 +132,7 @@ Main point aplikasi yang menjalankan:
 ```rust
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🚀 Starting Face Blur Detection Server (Mock Mode)...");
+    println!(" Starting Face Blur Detection Server (Mock Mode)...");
 
     let model = YoloModel::new_mock();
     let camera = CameraSource::new_mock();
@@ -143,7 +146,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let app = api_router(Arc::new(state)).layer(cors);
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
-    println!("✅ Server running on http://127.0.0.1:3000");
+    println!(" Server running on http://127.0.0.1:3000");
     
     axum::serve(listener, app).await?;
     Ok(())
@@ -378,21 +381,6 @@ Drag-and-drop file upload dengan preview.
 
 ---
 
-## **API Endpoints**
-
-### `GET /api/health`
-
-Health check endpoint.
-
-**Response:**
-```json
-{
-  "status": "ok"
-}
-```
-
----
-
 ### `GET /api/detect`
 
 Mock face detection untuk realtime demo.
@@ -465,64 +453,28 @@ npm run dev
 # Frontend: http://localhost:5173
 ```
 
-### Quick Test
-
-```powershell
-# Test health endpoint
-Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:3000/api/health"
-
-# Test detection endpoint
-Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:3000/api/detect"
-```
-
----
-
 ## **Features**
 
-✅ **Upload Image Blur**
+**Upload Image Blur**
 - Deteksi wajah menggunakan face-api.js (TinyFaceDetector)
 - Multi-pass blur untuk hasil optimal
 - Download hasil blur
 
-✅ **Real-time Webcam Blur**
+**Real-time Webcam Blur**
 - Polling backend untuk mock detections
 - Canvas overlay dengan blur filter
 - Live face count display
 
-✅ **Adjustable Settings**
+**Adjustable Settings**
 - Blur intensity slider (5-50px)
 - Auto hardware thread detection
 - Processing stats (time, faces detected)
 
-✅ **Modular Backend**
+**Modular Backend**
 - Mock mode untuk development
 - CORS enabled
 - Type-safe error handling
 
----
-
-## **Screenshots**
-
-| Tampilan | Status |
-|----------|--------|
-| Health Check API | ✅ |
-| Mock Detection Response | ✅ |
-| Upload & Blur Interface | ✅ |
-| Real-time Webcam Blur | ✅ |
-| Processing Stats | ✅ |
-
----
-
-## **Why Mock Backend?**
-
-Backend mock digunakan karena:
-
-1. **Kompleksitas Windows Setup**: OpenCV + ONNX Runtime memerlukan MSVC Build Tools, Windows SDK, CMake, vcpkg
-2. **Development Speed**: Fokus pada arsitektur dan FP patterns tanpa dependency hell
-3. **Client-side Accuracy**: face-api.js memberikan deteksi akurat di browser
-4. **Easy Deployment**: Tidak perlu GPU atau native dependencies
-
-### Migration ke Production
 
 Untuk production dengan real inference:
 
@@ -538,10 +490,10 @@ let camera = CameraSource::new(0, 640.0, 480.0)?;  // OpenCV
 
 Projek ini menunjukkan bahwa **Rust** dapat digunakan secara efektif untuk membangun layanan **privacy protection** yang memiliki kebutuhan:
 
-✅ **Cepat & aman** dengan type-safe concurrency  
-✅ Menerapkan paradigma **Functional Programming** secara konsisten  
-✅ **Client-side processing** untuk privasi maksimal  
-✅ **Modular architecture** yang mudah di-maintain  
+**Cepat & aman** dengan type-safe concurrency  
+Menerapkan paradigma **Functional Programming** secara konsisten  
+**Client-side processing** untuk privasi maksimal  
+**Modular architecture** yang mudah di-maintain  
 
 ### Functional Programming Benefits
 
@@ -561,47 +513,6 @@ Projek ini menunjukkan bahwa **Rust** dapat digunakan secara efektif untuk memba
 - **Multi-model support** (face recognition, emotion detection)
 - **Cloud deployment** dengan Docker/Kubernetes
 
----
-
-## **Troubleshooting**
-
-### Port Already in Use
-
-```powershell
-# Stop process on port 3000
-Get-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess | Stop-Process
-
-# Or use different port
-$env:PORT = "3001"
-cargo run
-```
-
-### Frontend Can't Connect
-
-- Pastikan backend running di port 3000
-- Check CORS configuration
-- Verify `VITE_API_BASE` environment variable
-
-### face-api.js Model Loading Failed
-
-```powershell
-# Ensure models exist
-ls frontend/public/models/
-
-# Re-download if needed
-cd frontend/public/models
-# Download tiny_face_detector_model files
-```
-
----
-
-## **License**
-
-MIT License - Feel free to use and modify! 🚀
-
----
-
-## **Contact**
-
 **Rayhan Marcello**  
 GitHub: [@RayhanMarcello](https://github.com/RayhanMarcello)
+
