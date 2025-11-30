@@ -1,75 +1,75 @@
-# **Face Blur Detection – Privacy Protection System **
+# Face Blur Detection – Privacy Protection System
+*A Functional Programming Approach with Rust & React*
 
-_A Functional Programming Approach with Rust & React_
-
-**Author:**<br/>
-Rayhan Marcello Ananda Purnomo|Maulida Rahmayanti|Muhammad Rakha Randhika|Faqih Chairul Anam|Amisha Nabila|Nurhafid Sudarianto
----
-
-## **Abstract**
-
-**Face Blur Detection** adalah aplikasi privacy protection yang secara otomatis mendeteksi dan mengaburkan wajah dalam gambar. Dibangun menggunakan **Rust** sebagai Backend (framework **Axum** + runtime **Tokio**) dan **React (Vite)** sebagai Frontend, dengan pendekatan **functional programming**. Backend saat ini berjalan dalam **mock mode** untuk kemudahan development di Windows, sementara frontend menggunakan **face-api.js** untuk deteksi wajah akurat di browser.
+**Author:**  
+Rayhan Marcello Ananda Purnomo | Maulida Rahmayanti | Muhammad Rakha Randhika | Faqih Chairul Anam | Amisha Nabila | Nurhafid Sudarianto
 
 ---
 
-## **Introduction**
+## Abstract
 
-Aplikasi ini dirancang untuk menyelesaikan permasalahan utama dalam perlindungan privasi visual:
+Face Blur Detection adalah aplikasi privacy protection yang secara otomatis mendeteksi dan mengaburkan wajah dalam gambar. Aplikasi ini dibangun menggunakan Rust sebagai backend (Axum + Tokio) dan React (Vite) sebagai frontend dengan pendekatan functional programming. Backend saat ini berjalan dalam mock mode untuk mempermudah pengembangan di Windows, sementara frontend menggunakan face-api.js untuk deteksi wajah secara akurat di browser.
 
-1. **Otomatisasi blur wajah** untuk konten sensitif
-2. **Processing real-time** dengan latency rendah
-3. Dibutuhkan sistem modern dengan arsitektur **aman, efisien, dan scalable**
+---
+
+## Introduction
+
+Aplikasi ini dirancang untuk menyelesaikan beberapa permasalahan utama dalam perlindungan privasi visual:
+
+1. Otomatisasi blur wajah untuk konten sensitif  
+2. Pemrosesan real-time dengan latensi rendah  
+3. Kebutuhan sistem modern yang aman, efisien, dan scalable  
 
 ### Mengapa Rust?
 
-| Alasan | Penjelasan |
-|--------|------------|
-| **Memory Safety** | Zero-cost abstractions tanpa garbage collector |
-| **High Concurrency** | Tokio async runtime untuk handle multiple requests |
-| **Functional Friendly** | Mendukung paradigma pemrograman fungsional |
-| **Type Safety** | Strong typing mencegah runtime errors |
+| Alasan            | Penjelasan                                             |
+|-------------------|--------------------------------------------------------|
+| Memory Safety     | Zero-cost abstractions tanpa garbage collector         |
+| High Concurrency  | Tokio async runtime untuk menangani multiple requests  |
+| Functional Friendly | Mendukung paradigma pemrograman fungsional          |
+| Type Safety       | Strong typing yang meminimalkan runtime errors         |
 
 ### Tujuan Utama
 
-✅ Memberikan sistem blur wajah yang **cepat, scalable, dan aman**  
-✅ Menyediakan API detection yang dapat di-integrate  
-✅ Mengaplikasikan paradigma **Functional Programming**  
-✅ Client-side processing untuk privasi maksimal  
+- Memberikan sistem blur wajah yang cepat, scalable, dan aman  
+- Menyediakan API detection yang dapat diintegrasikan  
+- Mengaplikasikan paradigma Functional Programming  
+- Menggunakan client-side processing untuk privasi maksimal  
 
 ---
 
-## **Background & Concepts**
+## Background & Concepts
 
 ### Technology Stack
 
-| Komponen | Teknologi |
-|----------|-----------|
-| **Backend** | Rust + Axum |
-| **Frontend** | React (Vite) + Tailwind CSS |
-| **Runtime Async** | Tokio |
-| **Face Detection** | face-api.js (TinyFaceDetector) |
-| **Serialization** | Serde |
-| **CORS** | tower-http |
+| Komponen       | Teknologi                    |
+|----------------|-----------------------------|
+| Backend        | Rust + Axum                 |
+| Frontend       | React (Vite) + Tailwind CSS |
+| Runtime Async  | Tokio                       |
+| Face Detection | face-api.js (TinyFaceDetector) |
+| Serialization  | Serde                       |
+| CORS           | tower-http                  |
 
-### Konsep Functional Programming Dalam Sistem
+### Konsep Functional Programming dalam Sistem
 
-| Konsep FP | Implementasi Dalam Proyek |
-|-----------|---------------------------|
-| **Pure Functions** | Detection handlers tidak mutate state |
-| **Immutability** | `AppState` wrapped dalam `Arc` untuk thread-safe sharing |
-| **Pattern Matching** | Error handling dengan `Result<T, AppError>` dan `match` |
-| **Higher-Order Functions** | `.map()`, `.filter()` untuk transformasi data |
-| **Composition** | Pipeline: Upload → Detect → Blur → Download |
+| Konsep FP          | Implementasi dalam Proyek                                          |
+|--------------------|--------------------------------------------------------------------|
+| Pure Functions     | Handler detection tidak memodifikasi state global                  |
+| Immutability       | `AppState` dibungkus dalam `Arc` untuk thread-safe sharing         |
+| Pattern Matching   | Error handling dengan `Result<T, AppError>` dan `match`           |
+| Higher-Order Functions | Penggunaan `.map()` dan `.filter()` untuk transformasi data   |
+| Composition        | Pipeline: Upload → Detect → Blur → Download                        |
 
-Dengan ini aplikasi bisa menangani **ratusan request serentak** tanpa bottleneck.
+Dengan pendekatan ini, aplikasi dapat menangani banyak request secara serentak tanpa bottleneck yang signifikan.
 
 ---
 
-## **Source Code Overview**
+## Source Code Overview
 
 ### Struktur Folder
 
-```
+```text
 face-blur-detection/
 ├── backend/
 │   ├── src/
@@ -511,5 +511,6 @@ Menerapkan paradigma **Functional Programming** secara konsisten
 
 **Rayhan Marcello**  
 GitHub: [@RayhanMarcello](https://github.com/RayhanMarcello)
+
 
 
