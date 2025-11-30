@@ -71,31 +71,30 @@ Dengan ini aplikasi bisa menangani **ratusan request detection serentak** tanpa 
 
 ```
 face-blur-detection/
-├── src/
-│   ├── main.rs                      # Entry point + server bootstrap
-│   │
-│   ├── errors.rs                    # Custom error types
-│   ├── state.rs                     # Shared application state
-│   ├── routes.rs                    # API endpoints routing
-│   │
-│   ├── camera.rs                    # Webcam capture logic
-│   ├── model.rs                     # ONNX model loading/inference
-│   └── inference.rs                 # Pre/post-processing pipeline
+
+face-blur-app/
 │
-├── frontend/                        # React frontend
-│   ├── src/
-│   │   ├── App.jsx
-│   │   ├── hooks/
-│   │   │   └── useImageProcessor.jsx
-│   │   └── components/
-│   │       └── upload/
-│   │           ├── ImageUpload.jsx
-│   │           └── RealtimeDetection.jsx
-│   │
-│   └── package.json
-│
-├── Cargo.toml                       # Rust dependencies
-├── yolo11n.onnx                     # YOLO11 model file
+├── backend/
+│   ├── Cargo.toml
+│   ├── models/
+│   │   └── face_detector.onnx        # model ONNX yang sudah kamu training
+│   └── src/
+│       ├── main.rs                   # entry utama axum
+│       │
+│       ├── routes/
+│       │   ├── mod.rs
+│       │   └── face_blur.rs          # endpoint POST /face-blur
+│       │
+│       ├── services/
+│       │   ├── mod.rs
+│       │   ├── detector.rs           # inference ONNX + post-processing
+│       │   └── blur.rs               # implementasi blur wajah
+│       │
+│       ├── utils/
+│       │   ├── mod.rs
+│       │   └── image_convert.rs      # konversi gambar ke tensor & sebaliknya
+│       │
+│       └── state.rs                  # state global (model ONNX, konfigurasi)
 └── README.md
 ```
 
