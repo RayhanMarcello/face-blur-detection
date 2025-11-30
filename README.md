@@ -3,66 +3,80 @@
 
 **Author:**  
 Rayhan Marcello Ananda Purnomo | Maulida Rahmayanti | Muhammad Rakha Randhika | Faqih Chairul Anam | Amisha Nabila | Nurhafid Sudarianto
-
 ---
 
 ## Abstract
-
-Face Blur Detection adalah aplikasi privacy protection yang secara otomatis mendeteksi dan mengaburkan wajah dalam gambar. Aplikasi ini dibangun menggunakan Rust sebagai backend (Axum + Tokio) dan React (Vite) sebagai frontend dengan pendekatan functional programming. Backend saat ini berjalan dalam mock mode untuk mempermudah pengembangan di Windows, sementara frontend menggunakan face-api.js untuk deteksi wajah secara akurat di browser.
-
+Face Blur Detection adalah aplikasi perlindungan privasi yang secara otomatis mendeteksi dan mengaburkan wajah pada gambar, membantu menjaga data visual tetap aman. Backend dikembangkan menggunakan Rust dengan Axum dan Tokio, menerapkan prinsip functional programming agar proses deteksi lebih aman, efisien, dan bebas error. Di sisi frontend, React (Vite) bersama face-api.js digunakan untuk mendeteksi wajah secara real-time dengan akurat di browser. Proyek ini menunjukkan bagaimana Rust dan functional programming bisa bekerja sama menciptakan layanan deteksi wajah yang cepat, aman, dan siap digunakan dalam berbagai aplikasi yang membutuhkan perlindungan privasi.
 ---
 
 ## Introduction
-
+Di zaman digital seperti sekarang, berbagi dan menyimpan gambar menjadi sangat mudah, namun hal ini juga menimbulkan tantangan terkait privasi. Wajah seseorang bisa tersebar atau digunakan tanpa izin mereka. Face Blur Detection dibuat untuk mengatasi masalah ini dengan mendeteksi dan mengaburkan wajah dalam gambar secara otomatis, sehingga privasi pengguna tetap terlindungi.
 Aplikasi ini dirancang untuk menyelesaikan beberapa permasalahan utama dalam perlindungan privasi visual:
-
 1. Otomatisasi blur wajah untuk konten sensitif  
 2. Pemrosesan real-time dengan latensi rendah  
 3. Kebutuhan sistem modern yang aman, efisien, dan scalable  
 
-### Mengapa Rust?
+### Mengapa menggunakan Rust?
+| Alasan                  | Penjelasan                                                                                                                                                                  |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Memory Safety**       | Rust memastikan keamanan memori melalui ownership dan borrowing system. Zero-cost abstractions memungkinkan performa tinggi tanpa overhead garbage collector.               |
+| **High Concurrency**    | Dengan **Tokio async runtime**, Rust dapat menangani banyak request secara bersamaan dengan efisien, membuat aplikasi scalable dan responsif.                               |
+| **Functional Friendly** | Rust mendukung paradigma pemrograman fungsional, seperti pure functions, immutability, dan higher-order functions, sehingga kode lebih modular, mudah diuji, dan minim bug. |
+| **Type Safety**         | Sistem tipe yang kuat di Rust meminimalkan kesalahan saat runtime dengan mendeteksi error lebih awal di compile-time, membuat aplikasi lebih stabil.                        |
+| **Performance**         | Rust menghasilkan executable yang sangat cepat karena optimisasi compiler dan manajemen memori yang efisien, cocok untuk aplikasi real-time seperti face detection.         |
+| **Cross-platform**      | Rust dan ekosistemnya mendukung pengembangan lintas platform, memudahkan integrasi dengan frontend berbasis web atau desktop.                                               |
+| **Error Handling**      | Rust menggunakan **Result** dan **Option** types untuk error handling yang aman dan eksplisit, mengurangi kemungkinan crash tak terduga.                                    |
 
-| Alasan            | Penjelasan                                             |
-|-------------------|--------------------------------------------------------|
-| Memory Safety     | Zero-cost abstractions tanpa garbage collector         |
-| High Concurrency  | Tokio async runtime untuk menangani multiple requests  |
-| Functional Friendly | Mendukung paradigma pemrograman fungsional          |
-| Type Safety       | Strong typing yang meminimalkan runtime errors         |
+### Integrasi Functional Programming
+Penerapan paradigma functional programming membantu membuat kode menjadi lebih rapi, modular, dan mudah diuji. Pendekatan ini memudahkan pengelolaan pipeline deteksi wajah yang kompleks, sekaligus menjaga keamanan dan meminimalkan potensi kesalahan.
 
-### Tujuan Utama
-
-- Memberikan sistem blur wajah yang cepat, scalable, dan aman  
-- Menyediakan API detection yang dapat diintegrasikan  
-- Mengaplikasikan paradigma Functional Programming  
-- Menggunakan client-side processing untuk privasi maksimal  
-
+### Keunikan Solusi
+- Real-time di browser: Deteksi wajah dilakukan secara langsung di browser dengan akurasi tinggi menggunakan face-api.js.
+- Backend efisien dan aman: Rust memastikan proses server berjalan cepat dan stabil, sekaligus aman dari kesalahan memori.
+- Layanan cepat dan andal: Kombinasi frontend dan backend menghasilkan aplikasi yang responsif, aman, dan siap digunakan untuk berbagai kebutuhan perlindungan privasi.
 ---
 
 ## Background & Concepts
+Untuk memahami Face Blur Detection, beberapa konsep kunci perlu dipahami:
+
+1. Face Detection
+Face detection adalah proses mengidentifikasi lokasi wajah manusia dalam gambar atau video. Ini merupakan langkah awal sebelum melakukan pengaburan atau manipulasi data visual untuk menjaga privasi. Teknologi ini menggunakan algoritma machine learning untuk mendeteksi fitur wajah dengan akurat.
+
+2. Privacy Protection
+Perlindungan privasi digital semakin penting di era media sosial dan cloud storage. Dengan menyamarkan wajah dalam gambar, aplikasi ini membantu mencegah penyalahgunaan data pribadi dan kebocoran identitas.
+
+3. Rust Programming Language
+Rust adalah bahasa pemrograman sistem yang menekankan performa tinggi, keamanan memori, dan concurrency. Rust memungkinkan pengembangan backend yang cepat dan stabil, cocok untuk aplikasi real-time seperti Face Blur Detection.
+
+4. Functional Programming
+Functional programming adalah paradigma yang menekankan immutability, pure functions, dan modularitas. Pendekatan ini membuat kode lebih mudah diuji, aman, dan minim error, terutama dalam pipeline deteksi wajah yang kompleks.
+
+5. Frontend Integration (React + face-api.js)
+Frontend menggunakan React (Vite) untuk membangun antarmuka yang responsif, sementara face-api.js memungkinkan deteksi wajah secara real-time di browser. Kombinasi ini memastikan pengalaman pengguna yang lancar sekaligus akurat.
+
+6. Asynchronous Programming (Tokio)
+Rust menggunakan Tokio async runtime untuk menjalankan banyak proses secara bersamaan tanpa menghambat performa server. Ini penting agar backend mampu menangani banyak request real-time dengan efisien.
 
 ### Technology Stack
-
-| Komponen       | Teknologi                    |
-|----------------|-----------------------------|
-| Backend        | Rust + Axum                 |
-| Frontend       | React (Vite) + Tailwind CSS |
-| Runtime Async  | Tokio                       |
-| Face Detection | face-api.js (TinyFaceDetector) |
-| Serialization  | Serde                       |
-| CORS           | tower-http                  |
+| Komponen       | Teknologi                      | Fungsi / Keterangan                                                                            |
+| -------------- | ------------------------------ | ---------------------------------------------------------------------------------------------- |
+| Backend        | Rust + Axum                    | Backend cepat, aman, dan terstruktur; Axum memudahkan pengembangan API.                        |
+| Frontend       | React (Vite) + Tailwind CSS    | React untuk antarmuka interaktif, Vite untuk build cepat, Tailwind CSS untuk desain responsif. |
+| Runtime Async  | Tokio                          | Menangani banyak proses bersamaan agar backend tetap responsif.                                |
+| Face Detection | face-api.js (TinyFaceDetector) | Deteksi wajah real-time di browser dengan model ringan dan akurat.                             |
+| Serialization  | Serde                          | Memudahkan serialisasi dan deserialisasi data antara backend dan frontend.                     |
+| CORS           | tower-http                     | Mengatur kebijakan CORS agar komunikasi frontend-backend aman.                                 |
 
 ### Konsep Functional Programming dalam Sistem
-
-| Konsep FP          | Implementasi dalam Proyek                                          |
-|--------------------|--------------------------------------------------------------------|
-| Pure Functions     | Handler detection tidak memodifikasi state global                  |
-| Immutability       | `AppState` dibungkus dalam `Arc` untuk thread-safe sharing         |
-| Pattern Matching   | Error handling dengan `Result<T, AppError>` dan `match`           |
+| Konsep FP              | Implementasi dalam Proyek                                     |
+|------------------------|---------------------------------------------------------------|
+| Pure Functions         | Handler detection tidak memodifikasi state global             |
+| Immutability           | `AppState` dibungkus dalam `Arc` untuk thread-safe sharing    |
+| Pattern Matching       | Error handling dengan `Result<T, AppError>` dan `match`       |
 | Higher-Order Functions | Penggunaan `.map()` dan `.filter()` untuk transformasi data   |
-| Composition        | Pipeline: Upload → Detect → Blur → Download                        |
+| Composition            | Pipeline: Upload → Detect → Blur → Download                   |
 
 Dengan pendekatan ini, aplikasi dapat menangani banyak request secara serentak tanpa bottleneck yang signifikan.
-
 ---
 
 ## Source Code Overview
@@ -479,39 +493,24 @@ Untuk production dengan real inference:
 let model = YoloModel::load("yolo11n.onnx")?;  // ONNX Runtime
 let camera = CameraSource::new(0, 640.0, 480.0)?;  // OpenCV
 ```
+---
 
+## **ScreenShot**
+![WhatsApp Image 2025-12-01 at 04 29 44_3aeb85fd](https://github.com/user-attachments/assets/03b4edc3-1c50-4c82-95b3-52597529d601)
+![WhatsApp Image 2025-12-01 at 04 29 24_e1ce408e](https://github.com/user-attachments/assets/291524d6-b093-4559-bb7a-16def4049b65)
 ---
 
 ## **Conclusion**
+Face Blur Detection memberikan cara yang praktis untuk menjaga privasi digital dengan secara otomatis mendeteksi dan mengaburkan wajah dalam gambar. Backend yang dibangun menggunakan Rust membuat aplikasi berjalan cepat, aman dari masalah memori, dan mampu menangani banyak proses sekaligus. Frontend React (Vite) dan face-api.js memastikan pengalaman pengguna tetap lancar dan responsif.
 
-Projek ini menunjukkan bahwa **Rust** dapat digunakan secara efektif untuk membangun layanan **privacy protection** yang memiliki kebutuhan:
-
-**Cepat & aman** dengan type-safe concurrency  
-Menerapkan paradigma **Functional Programming** secara konsisten  
-**Client-side processing** untuk privasi maksimal  
-**Modular architecture** yang mudah di-maintain  
-
-### Functional Programming Benefits
-
-- **Immutability** → Thread-safe tanpa explicit locks
-- **Pure functions** → Predictable, testable, composable
-- **Pattern matching** → Exhaustive error handling
-- **Type safety** → Catch bugs at compile-time
+Pendekatan functional programming membuat kode lebih rapi, modular, dan mudah diuji. Pipeline sistem yang jelas - Upload, Detect, Blur, Download - menjamin alur kerja tetap efisien dan mudah dipelihara. Kombinasi teknologi ini membuktikan bahwa menjaga privasi tidak perlu mengorbankan performa atau kenyamanan pengguna. Face Blur Detection menjadi solusi yang aman, cepat, dan siap digunakan dalam berbagai situasi.
 
 ### Future Enhancements
-
 🔮 Ke depannya, fitur projek ini dapat dikembangkan menjadi:
-
 - **Real backend inference** dengan ONNX Runtime + OpenCV
 - **Batch video processing** untuk file upload
 - **WebSocket streaming** untuk real-time collaboration
 - **GPU acceleration** dengan CUDA support
 - **Multi-model support** (face recognition, emotion detection)
 - **Cloud deployment** dengan Docker/Kubernetes
-
-**Rayhan Marcello**  
-GitHub: [@RayhanMarcello](https://github.com/RayhanMarcello)
-
-
-
-
+---
