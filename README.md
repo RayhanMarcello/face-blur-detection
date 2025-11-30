@@ -1,68 +1,90 @@
 # Face Blur Detection – Real-time Face Detection System 
-**A Functional Programming Approach with Rust**
 
-**Authors:**  
+**Authors:**
 Rayhan Marcello Ananda Purnomo | Nurhafid Sudarianto | Maulida Rahmayanti | Muhammad Rakha Randika | Amisha Nabila Putri Wiguna | Faqih Chairul Anam
-
 ---
 
 ## Abstract
 
-**Face Blur Detection** adalah aplikasi deteksi wajah real-time yang dibangun menggunakan **Rust** sebagai Backend dan **React (Vite)** sebagai Frontend dengan pendekatan **functional programming**. Backend dikembangkan menggunakan framework **Axum** dan runtime asynchronous **Tokio**, memungkinkan sistem menangani request secara concurrent dan async. Sistem menggunakan **YOLO11n** melalui **ONNX Runtime** untuk inferensi machine learning dan **OpenCV** untuk capture webcam.
-
+Face Blur Detection merupakan aplikasi yang dibuat untuk membantu menjaga privasi dengan cara mendeteksi dan memburamkan wajah secara otomatis melalui kamera secara real-time. Aplikasi ini dibangun menggunakan Rust sebagai backend dan React (Vite) sebagai frontend, dengan dukungan framework Axum dan runtime Tokio agar sistem dapat berjalan cepat dan efisien dalam menangani banyak proses secara bersamaan. Untuk mendeteksi wajah, sistem menggunakan model AI YOLO11n melalui ONNX Runtime, sementara OpenCV digunakan untuk mengambil gambar dari webcam. Pendekatan functional programming diterapkan agar kode lebih rapi, mudah dikelola, dan mengurangi kesalahan. Hasilnya, aplikasi dapat bekerja secara stabil, responsif, dan cukup akurat dalam melakukan deteksi wajah secara real-time.
 ---
 
 ## Introduction
 
-Aplikasi ini dirancang untuk menyelesaikan permasalahan utama pada sistem deteksi wajah umumnya yaitu:
+Berikut adalah beberapa alasan utama di balik pengembangan aplikasi Face Blur Detection, baik dari sisi masalah yang diangkat maupun teknologi yang digunakan.
 
-1. **Lambatnya processing** deteksi wajah pada sistem tradisional
-2. **Keterbatasan concurrency** dalam menangani multiple request deteksi
-3. Dibutuhkan sistem modern dengan arsitektur **aman, efisien, dan scalable**
+### 1. What problem does your application solve?
+Seiring meningkatnya penggunaan kamera di berbagai aplikasi, masalah privasi menjadi semakin penting. Banyak pengguna tidak menyadari bahwa wajah mereka dapat direkam, disimpan, atau disalahgunakan. Aplikasi ini dibuat untuk melindungi privasi dengan cara memburamkan wajah secara otomatis saat kamera digunakan, sehingga wajah tidak terlihat secara langsung dan risiko penyalahgunaan data dapat dikurangi.
 
-### Mengapa Rust?
+### 2. Why did you choose Rust?
+| No | Alasan                      | Penjelasan Singkat                                                                                     |
+| -- | --------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 1  | **Performa Tinggi**         | Rust mampu berjalan cepat seperti C/C++ sehingga cocok untuk pemrosesan video dan AI secara real-time. |
+| 2  | **Keamanan Memori**         | Rust mencegah error seperti *null pointer* dan *memory leak* tanpa perlu garbage collector.            |
+| 3  | **Concurrency Aman**        | Rust mendukung pemrosesan paralel yang aman dan mencegah *data race*.                                  |
+| 4  | **Cocok untuk AI & Vision** | Performa Rust ideal untuk inferensi model AI dan pemrosesan gambar.                                    |
+| 5  | **Stabil & Andal**          | Aplikasi berjalan lebih stabil untuk penggunaan jangka panjang.                                        |
+| 6  | **Integrasi Mudah**         | Mudah terhubung dengan OpenCV, ONNX Runtime, dan library modern lainnya.                               |
+| 7  | **Komunitas Berkembang**    | Dukungan komunitas yang aktif dan dokumentasi yang lengkap.                                            |
 
-| Alasan | Penjelasan |
-|--------|------------|
-| **Memory Safety** | Zero-cost abstractions tanpa garbage collector, mencegah memory leaks |
-| **High Concurrency** | Tokio async runtime untuk handle multiple detection requests |
-| **Functional Friendly** | Mendukung paradigma pemrograman fungsional (immutability, pattern matching) |
-| **Native Performance** | Setara C/C++ untuk ML inference pipeline |
 
-### Tujuan Utama
+### Why integrate functional programming concepts?
+Konsep functional programming membantu membuat kode lebih rapi, mudah dipahami, dan lebih aman dari error. Pendekatan ini sangat membantu saat mengelola data real-time yang kompleks agar alur program tetap jelas dan terkontrol.
 
-Memberikan sistem deteksi wajah yang **cepat, scalable, dan aman**  
-Menyediakan API detection yang dapat di-integrate dengan aplikasi lain  
-Mengaplikasikan paradigma **Functional Programming** dalam implementasi sistem  
-
+### What makes your solution unique or interesting?
+Keunikannya terletak pada penggabungan Rust, AI real-time, dan functional programming dalam satu sistem. Selain itu, penggunaan model YOLO11n yang ringan namun tetap akurat membuat aplikasi ini efisien dan relevan untuk penggunaan nyata.
 ---
 
 ## Background & Concepts
+Dengan semakin berkembangnya teknologi kamera dan kecerdasan buatan, penggunaan sistem pendeteksi wajah kini menjadi hal yang umum di berbagai aplikasi. Namun, kemudahan ini juga membawa risiko terhadap privasi, karena wajah merupakan data pribadi yang sensitif. Masih banyak sistem yang mampu mengenali wajah, tetapi belum banyak yang benar-benar fokus melindungi identitas penggunanya. Oleh karena itu, penting untuk memahami konsep dasar dan teknologi yang digunakan dalam aplikasi Face Blur Detection, mulai dari cara kerja deteksi wajah hingga pemrosesan secara real-time. Bagian ini membahas konsep-konsep utama yang menjadi dasar dalam membangun sistem pemburaman wajah secara otomatis.
+
+1. Face Detection
+Face detection adalah proses mengenali apakah ada wajah dalam gambar atau video. Dalam aplikasi ini, sistem menggunakan deteksi wajah untuk menemukan posisi wajah secara otomatis sebelum efek blur diberikan. Inilah bagian utama yang memungkinkan aplikasi melindungi privasi pengguna secara langsung.
+
+2. Real-Time Processing
+Real-time processing berarti sistem bekerja secara langsung tanpa jeda yang terasa. Saat wajah muncul di kamera, blur akan diterapkan seketika, sehingga pengguna tidak merasakan keterlambatan dan aplikasi tetap terasa responsif.
+
+3. AI Model (YOLO11n)
+YOLO11n adalah model AI yang digunakan untuk mengenali wajah dengan cepat. Model ini dipilih karena ringan, tidak membutuhkan banyak resource, tetapi tetap mampu memberikan hasil deteksi yang cukup akurat untuk penggunaan real-time.
+
+4. ONNX Runtime
+ONNX Runtime digunakan sebagai mesin untuk menjalankan model AI di backend. Teknologi ini membantu agar proses inferensi berjalan lebih cepat dan stabil, sehingga aplikasi tetap lancar saat digunakan.
+
+5. OpenCV
+OpenCV berperan dalam mengambil gambar dari webcam dan mengolah setiap frame video sebelum diproses lebih lanjut oleh sistem deteksi. Library ini mempermudah pengolahan gambar dasar seperti membaca dan memanipulasi frame secara real-time.
+
+6. Rust Backend & React Frontend
+Rust digunakan di sisi backend karena cepat, aman, dan andal, sedangkan React (Vite) digunakan untuk menampilkan tampilan aplikasi yang interaktif dan mudah digunakan. Kombinasi ini membuat sistem kuat di balik layar dan nyaman di sisi pengguna.
+
+7. Functional Programming Concept
+Pendekatan functional programming membantu pengembangan sistem menjadi lebih tertata. Dengan konsep ini, kode lebih mudah dipahami, lebih stabil, dan tidak mudah menimbulkan error, terutama saat menangani data yang terus berubah dari kamera.
 
 ### Technology Stack
+| Kategori             | Teknologi              | Fungsi                                                          |
+| -------------------- | ---------------------- | --------------------------------------------------------------- |
+| Backend              | Rust                   | Bahasa utama backend untuk performa tinggi dan keamanan sistem. |
+| Backend Framework    | Axum                   | Membangun API dan routing backend.                              |
+| Runtime Async        | Tokio                  | Menjalankan proses asynchronous dan concurrent.                 |
+| AI Engine            | ONNX Runtime           | Menjalankan model AI dengan cepat dan efisien.                  |
+| Computer Vision      | OpenCV                 | Mengambil dan memproses gambar dari webcam.                     |
+| AI Model             | YOLO11n                | Mendeteksi wajah secara cepat dan akurat.                       |
+| Frontend             | React                  | Membangun tampilan aplikasi interaktif.                         |
+| Frontend Tooling     | Vite                   | Mempercepat proses development frontend.                        |
+| Programming Approach | Functional Programming | Memastikan kode rapi, aman, dan minim error.                    |
+| Architecture         | Async Architecture     | Menjaga aplikasi tetap responsif saat menangani banyak proses.  |
+| Serialization        | Sarde                  | Mengubah struktur data Rust ke JSON dan sebaliknya.             |
 
-| Komponen | Teknologi |
-|----------|-----------|
-| **Backend** | Rust + Axum |
-| **Frontend** | React (Vite) + Tailwind CSS |
-| **Runtime Async** | Tokio |
-| **ML Inference** | ONNX Runtime |
-| **Computer Vision** | OpenCV |
-| **Serialization** | Serde |
-| **Model** | YOLO11n (lightweight) |
 
 ### Konsep Functional Programming Dalam Sistem
+| Konsep FP                  | Implementasi Dalam Proyek                                                                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Pure Functions**         | Fungsi seperti `preprocess()` dan `postprocess()` digunakan untuk transformasi frame/video tanpa mengubah state luar, sehingga hasilnya konsisten dan mudah diuji. |
+| **Immutability**           | Frame yang di-capture dan hasil deteksi wajah tidak diubah secara langsung, melainkan selalu menghasilkan data baru untuk langkah selanjutnya.                     |
+| **Pattern Matching**       | Error handling menggunakan `Result<T, AppError>` dan ekspresi `match` untuk menangani kondisi sukses atau gagal secara eksplisit.                                  |
+| **Higher-Order Functions** | Fungsi seperti `.map()` dan `.filter()` digunakan untuk memproses dan memanipulasi hasil deteksi wajah dengan cara yang modular dan bersih.                        |
+| **Composition**            | Pipeline utama dibangun dari rangkaian fungsi: **Capture → Preprocess → Inference → Postprocess**, sehingga alur data jelas dan kode lebih modular.                |
 
-| Konsep FP | Implementasi Dalam Proyek |
-|-----------|---------------------------|
-| **Pure Functions** | `preprocess()`, `postprocess()` - transformasi image tanpa side effects |
-| **Immutability** | Frame capture dan detections tidak di-mutate, selalu return new data |
-| **Pattern Matching** | Error handling dengan `Result<T, AppError>` dan `match` expressions |
-| **Higher-Order Functions** | `.map()`, `.filter()` untuk transformasi detection results |
-| **Composition** | Pipeline: Capture → Preprocess → Inference → Postprocess |
-
-Dengan ini aplikasi bisa menangani **ratusan request detection serentak** tanpa bottleneck.
-
+Dengan ini aplikasi bisa menangani ratusan request detection serentak tanpa bottleneck.
 ---
 
 ## Source Code Overview
@@ -453,32 +475,7 @@ npm run dev
 ---
 
 ## Conclusion
-
-Projek ini menunjukkan bahwa **Rust** dapat digunakan secara efektif untuk membangun layanan **face detection** yang memiliki kebutuhan:
-
-✅ **Cepat & aman** pada sistem concurrency yang tinggi  
-✅ Menerapkan paradigma **Functional Programming** dengan konsisten  
-✅ **Type-safe** error handling dan memory management  
-✅ **Zero-cost abstractions** untuk ML inference pipeline  
-
-### Functional Programming Benefits
-
-- **Immutability** → Thread-safe tanpa locks eksplisit
-- **Pure functions** → Predictable, testable, composable
-- **Pattern matching** → Exhaustive error handling
-- **Higher-order functions** → Elegant data transformations
-
-### Future Enhancements
-
-🔮 Ke depannya, fitur projek ini dapat dikembangkan menjadi:
-
-- **Blur detection** untuk mengaburkan wajah terdeteksi
-- **Multi-model support** (face recognition, emotion detection)
-- **WebSocket** untuk real-time streaming
-- **Batch processing** untuk video files
-- **Cloud deployment** dengan containerization (Docker)
-- **GPU acceleration** dengan CUDA support
-
+Proyek Face Blur Detection membuktikan bahwa Rust bisa digunakan untuk membuat sistem deteksi wajah yang cepat, aman, dan andal, dengan kode yang rapi dan minim error berkat Functional Programming. Sistem ini mampu mendeteksi wajah secara real-time dengan efisien menggunakan YOLO11n dan OpenCV. Ke depannya, aplikasi ini bisa dikembangkan lebih jauh dengan fitur blur otomatis, multi-model, streaming real-time, cloud deployment, dan GPU acceleration, menjadikannya solusi modern yang stabil dan mudah dikembangkan untuk melindungi privasi pengguna.
 ---
 
 ## Why C++ Needed? 🤔
